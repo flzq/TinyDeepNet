@@ -109,3 +109,34 @@ class Node(object):
             for child in self.children:
                 child.reset_value()
                 
+
+class Variable(Node):
+    def __init__(self, dim, init=False, trainable=True, **kwargs):
+        """
+        变量节点没有父节点
+        :param dim: 变量的形状
+        :param init: 是否初始化
+        :param trainable: 是否参与训练
+        :param kwargs:
+        """
+        super(Variable, self).__init__()
+        self.dim = dim
+        
+        # 如果需要初始化，通过正态分布随机初始化变量的值
+        if init:
+            self.value = np.mat(np.random.normal(0, 0.001, self.dim))
+            
+        # 变量节点是否参与训练
+        self.trainable = trainable
+        
+    def set_value(self, value):
+        """
+        为变量赋值
+        :param value:
+        :return:
+        """
+        assert isinstance(value, np.matrix) and value.shape == self.dim
+        
+        # 本节点的值被改变，终止所有子孙节点的值
+        self.reset_value()
+        self.value = value

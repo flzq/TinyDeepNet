@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.utils.data as Data
 import matplotlib.pyplot as plt
-from mnist import load_mnist
+# from mnist import load_mnist
 
 
 def AND(x1, x2):

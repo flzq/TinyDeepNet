@@ -3,9 +3,15 @@
 """
 import abc
 import numpy as np
+from .graph import Graph, default_graph
 
 class Node(object):
     def __init__(self, *parents, **kwargs):
+        # 计算图对象，默认为全局对象 default_graph
+        self.graph = kwargs.get('graph', default_graph)
+        self.need_save = kwargs.get('need_save', True)
+        self.gen_node_name(**kwargs)
+
         self.parents = list(parents)  # 父节点列表
         self.children = []  # 子节点列表
         self.value = None  # 本节点值
@@ -14,6 +20,9 @@ class Node(object):
         # 将本节点添加到父节点的子节点列表中
         for parent in parents:
             parent.children.append(self)
+
+        # 将本节点添加到计算图中
+        self.graph.add_node(self)
         
     def get_parents(self):
         """
@@ -26,6 +35,16 @@ class Node(object):
         :return: 返回本节点的子节点
         """
         return self.children
+
+    def gen_node_name(self, **kargs):
+        """
+        生成节点名称，如果用户不指定，则根据节点类型生成类似于"MatMul:3"的节点名，
+        如果指定了name_scope，则生成类似"Hidden/MatMul:3"的节点名
+        """
+        self.name = kargs.get('name', '{}:{}'.format(
+            self.__class__.__name__, self.graph.node_count()))
+        if self.graph.name_scope:
+            self.name = '{}/{}'.format(self.graph.name_scope, self.name)
     
     def forward(self):
         '''

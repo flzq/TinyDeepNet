@@ -36,12 +36,12 @@ class Node(object):
         """
         return self.children
 
-    def gen_node_name(self, **kargs):
+    def gen_node_name(self, **kwargs):
         """
         生成节点名称，如果用户不指定，则根据节点类型生成类似于"MatMul:3"的节点名，
         如果指定了name_scope，则生成类似"Hidden/MatMul:3"的节点名
         """
-        self.name = kargs.get('name', '{}:{}'.format(
+        self.name = kwargs.get('name', '{}:{}'.format(
             self.__class__.__name__, self.graph.node_count()))
         if self.graph.name_scope:
             self.name = '{}/{}'.format(self.graph.name_scope, self.name)

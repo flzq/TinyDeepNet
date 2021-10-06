@@ -27,5 +27,19 @@ class Graph:
     def node_count(self):
         return len(self.nodes)
 
+
+
+def get_node_from_graph(node_name, name_scope=None, graph=None):
+    if graph is None:
+        graph = default_graph
+    if name_scope:
+        node_name = name_scope + '/' + node_name
+    for node in graph.nodes:
+        if node.name == node_name:
+            return node
+    return None
+
+
+
 # 全局默认计算图
 default_graph = Graph()

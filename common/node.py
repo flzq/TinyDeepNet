@@ -68,12 +68,16 @@ class Node(object):
             if self is result: # 结果节点对自己的雅可比矩阵为一个单位阵
                 self.jacobi = np.mat(np.eye(self.dimension()))
             else:
+                # 结果节点对本节点的雅可比矩阵维度为：[1, n]
                 self.jacobi = np.mat(
                     np.zeros((result.dimension(), self.dimension()))
                 )
-                
+                # 当有多个子节点时， 最终结果节点对当前节点的雅可比矩阵为：结果节点对各个子节点的雅可比矩阵与子节点对当前节点的雅可比矩阵相乘，将所有乘积相加
                 for child in self.get_children():
+                    # 子节点的value不为None，说明它在本次的计算路径上
                     if child.value is not None:
+                        # child.backward(result)：结果节点对子节点的雅可比矩阵
+                        # child.get_jacobi(self)：子节点对当前节点的雅可比矩阵
                         self.jacobi += child.backward(result) * child.get_jacobi(self)
         
         return self.jacobi

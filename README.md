@@ -22,7 +22,7 @@ example
 ## 主要模块
 * 损失函数：CrossEntropyWithSoftMax
 * 算子：Add，MatMul，SoftMax
-* 优化器：GradientDescent，Momentum
+* 优化器：GradientDescent，Momentum，AdaGrad
 
 ## 开始使用
 

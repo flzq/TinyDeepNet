@@ -64,7 +64,7 @@ loss = tdn.ops.loss.CrossEntropyWithSoftMax(linear, one_hot)
 learning_rate = 0.02
 
 # 构造Adam优化器
-optimizer = tdn.optimizer.Momentum(tdn.default_graph, loss, learning_rate)
+optimizer = tdn.optimizer.AdaGrad(tdn.default_graph, loss, learning_rate)
 
 # 批大小为16
 batch_size = 16
